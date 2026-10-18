@@ -1,5 +1,5 @@
-(()=>{const C=window.NAHODKA||{};if(!C.url||!C.key||!window.supabase)return;
-const sb=supabase.createClient(C.url,C.key);S.backend=true;S.items=[];S.chats={};S.peers={};S.uid=null;S.auth=0;S.pw="";
+(()=>{const C=window.NAHODKA||{};const LIB=window.supabase||window.supabaseLite;if(!C.url||!C.key||!LIB)return;
+const sb=LIB.createClient(C.url,C.key);S.backend=true;S.items=[];S.chats={};S.peers={};S.uid=null;S.auth=0;S.pw="";
 S.favs=new Set(ld("nd_favs")||[]);document.head.insertAdjacentHTML("beforeend","<style>.bd{display:none!important}</style>");
 const AT=o=>Object.keys(o).sort((a,b)=>b.length-a.length).reverse().forEach(k=>{P[k]=o[k];RX.unshift([new RegExp("(?<![\\u0400-\\u04FF])"+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?![\\u0400-\\u04FF])","g"),o[k]])});
 AT({"Введите email":"Enter your email","Пароль":"Password","Пароль: минимум 6 символов":"Password: at least 6 characters","минимум 6 символов":"at least 6 characters","Подтвердите email по письму и войдите":"Confirm your email via the message, then log in","Неверный email или пароль":"Wrong email or password","Не отправлено":"Not sent","Не удалось опубликовать":"Could not publish","Ошибка":"Error","Чат":"Chat","Пока нет объявлений. Станьте первым!":"No listings yet. Be the first!","Общая база подключена · объявлений":"Shared database connected · listings","Нет связи с базой":"No database connection","Сообщений пока нет. Откройте объявление и нажмите «Написать».":"No messages yet. Open a listing and tap “Message”."});
@@ -44,7 +44,7 @@ V.login=()=>`<main><button class="ib" aria-label="Назад" onclick="S.pre=nul
 setInterval(async()=>{if(!S.uid||!S.auth)return;try{const t=S.stack[S.stack.length-1],v=$("#mi")&&$("#mi").value;if(await loadM()&&((t&&t[0]=="chat")||(!t&&S.tab=="chats"))){R();if(v&&$("#mi")){$("#mi").value=v;$("#mi").focus()}}}catch(e){}},5000);
 setInterval(refresh,C.poll||15000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
 sb.auth.onAuthStateChange((ev)=>{if(ev=="SIGNED_OUT"&&S.auth){S.auth=0;R()}});
-runDiag=async function(){const L=["Сборка: "+APPV,"Supabase: "+C.url.replace(/^https?:\/\//,""),"Режим: облачный (база данных)","Вход: "+(S.me?S.me.email:"нет")],q=async(t,f)=>{const r=await f(sb.from(t).select("id",{count:"exact",head:true}));return r.error?"ОШИБКА: "+r.error.message:r.count};
+runDiag=async function(){const L=["Сборка: "+APPV,"Supabase: "+C.url.replace(/^https?:\/\//,""),"Режим: облачный (база данных)","Клиент: "+(window.supabase?"официальный (CDN)":"встроенный (CDN недоступен)"),"Вход: "+(S.me?S.me.email:"нет")],q=async(t,f)=>{const r=await f(sb.from(t).select("id",{count:"exact",head:true}));return r.error?"ОШИБКА: "+r.error.message:r.count};
 try{L.push("Объявлений в базе (видно вам): "+await q("listings",x=>x));L.push("Ваших объявлений в базе: "+await q("listings",x=>x.eq("user_id",S.uid)));L.push("Профилей в базе: "+await q("profiles",x=>x))}catch(e){L.push("Сбой запроса: "+e.message)}
 L.push("В ленте на экране: "+S.items.length);if(S.lastErr)L.push("Последняя ошибка: "+S.lastErr);S.diag=L.join("\n");R()};
 R();boot();})();
