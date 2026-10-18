@@ -375,7 +375,7 @@ RX.unshift([/(?<![\u0400-\u04FF])Локальный режим: объявлен
 R();
 </script>
 <script>
-const APPV="r7";
+const APPV="r8";
 Object.assign(P,{});[["Проверка подключения","Connection check"],["Проверить","Check"]].forEach(x=>RX.unshift([new RegExp("(?<![\\u0400-\\u04FF])"+x[0]+"(?![\\u0400-\\u04FF])","g"),x[1]]));
 runDiag=async function(){const C=window.NAHODKA||{};S.diag=["Сборка: "+APPV,"Клиент Supabase: "+(window.supabase?"официальный (CDN)":window.supabaseLite?"встроенный (CDN недоступен)":"нет"),"config.js: "+(C.url?C.url.replace(/^https?:\/\//,""):"ПУСТО — приложение в локальном режиме"),"Режим: "+(S.backend?"облачный (база данных)":"локальный — объявления видны только на этом устройстве")].join("\n");R()};
 V.diag=()=>head("Проверка подключения")+`<main><pre style="white-space:pre-wrap;font-size:13px;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px">${esc(S.diag||"Нажмите «Проверить»")}</pre><button class="btn" onclick="runDiag()">Проверить</button></main>`;
